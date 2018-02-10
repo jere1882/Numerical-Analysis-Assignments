@@ -1,0 +1,12 @@
+// EJERCICIO 6 
+
+// f(x)=x^2 - 5 = 0
+// g(x) = x + c(x^2-5)  yo busco cuando se hace cero asi q multiplico por c y tiene q andar igual
+
+
+// deseamos hallar un c adecuado para que el método converja -sqrt(5)
+// elijo un c / la generatriz tenga derivada cero en -raíz de 5 para minimizar el k 
+// g'(-sqrt(5))) = 1+2c-sqrt(5) => c=1/2sqrt(5) 
+
+// y hallar con los teoremas un intervalo para el que converja
+

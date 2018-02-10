@@ -1,0 +1,51 @@
+function y=trapecio(f,a,b)
+  h=b-a;
+  y= h/2 * (f(b)+f(a));
+
+  X= a:0.0001:b;
+  Y= f(X);
+  
+  deff("y=aprox_l(x)","y=f(a)*(x-b)/(a-b) + f(b)*(x-a)/(b-a)");
+  T=aprox_l(X);
+  xgrid(1)
+  xlabel("X"); 
+  ylabel("Y");
+  plot(X,Y,X,T);
+  
+  //APROXIMAMOS LA INTEGRAL MEDIANTE LA INTEGRAL DE LA RECTA QUE INTERPOLA LOS EXTREMOS DE INTEGRACION.
+  
+ 
+endfunction
+
+
+function integral=trapecio_compuesto_peru (f,a,b,n) 
+  //n es el numero de subintervalos. se hallarán n+1 nodos.
+  x=zeros(n+1,1);
+  for i=1:1:n+1
+    x(i)= a + (i-1)*(b-a)/n;
+  end
+
+  integral=0;
+  
+  for i=1:n //integro cada subintervalo
+    integral = integral + trapecio (f,x(i),x(i+1) );
+  end
+
+endfunction
+
+
+function integral=trapecio_pensado (f,a,b,n)
+  h=(b-a)/n;
+  x=zeros(n+1,1);
+  for i=1:1:n+1
+    x(i)= a + (i-1)*h;
+  end
+
+  
+  integral= 0;
+  integral = integral + f(x(1))/2 + f(x(n+1))/2;
+  for i=2:1:n
+    integral = integral + f(x(i));
+  end
+  integral = h*integral;
+endfunction

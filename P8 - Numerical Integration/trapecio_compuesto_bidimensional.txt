@@ -1,0 +1,45 @@
+function integral=trapecio_pensado (func,a,b,n)  //NO LE VAYAS A PONER f AL ARGUMENTO PORQUE EXPLOTA TODO! OMG
+  h=(b-a)/n;
+  Q=zeros(n+1,1);
+  for i=1:1:n+1
+    Q(i)= a + (i-1)*h;
+  end
+  integral= 0;
+  integral = integral + (func(a) + func(b))/2;
+  for i=2:1:n
+    integral = integral + func(Q(i));
+  end
+  integral = h*integral;
+endfunction
+
+
+function integral=trapecio_compuesto_aux (f,x0,a,b,n)
+  [p1, p2, p3] = string(f)
+  h=(b-a)/n;
+  x=zeros(n+1,1);
+  for i=1:1:n+1
+    x(i)= a + (i-1)*h;
+  end
+
+  
+  integral= 0;
+  integral = integral + f(x(1),x0)/2 + f(x(n+1),x0)/2;
+  for i=2:1:n
+    integral = integral + f(x(i),x0);
+  end
+  integral = h*integral;
+endfunction
+
+function integral=trapecio_bidimensional(f,a,b,c,d,n,m)
+  
+  //integral desde a hasta b   integral desde c(x) hasta d(x)   f(x,y) dy dx
+  
+  // n numero de intervalos para el eje x. m numero de intervalos para el eje y.
+  
+  
+  function r=G(x)
+    r=trapecio_compuesto_aux(f,x,c(x),d(x),n)
+endfunction
+
+  integral = trapecio_pensado(G,a,b,m);
+endfunction

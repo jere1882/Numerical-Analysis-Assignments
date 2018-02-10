@@ -1,0 +1,54 @@
+function ans = fact_LU(A)
+    n = size(A);    // Dimensiones de la matriz A
+    
+    // *************************************************************************
+    // La matriz debe se cuadrada
+    // *************************************************************************
+    if( n(1) <> n(2) ) then
+        error("!!!ERROR: La matriz debe ser cuadrada!!!")
+    else
+        n = n(1)
+    end
+    
+    
+    // *************************************************************************
+    // Inicia la eliminacion Gauss sin pivoteo
+    // *************************************************************************
+    U = A                    // U se inicializa como una copia de A
+    L = eye(n,n)             // Inicializa L como identidad
+    for k = 1:n-1
+        for j = k+1:n
+            L(j,k) = U(j,k)/U(k,k)            // Multiplicadores
+            U(j,:) = U(j,:) - L(j,k)*U(k,:)   // Fila j = Fila j - L(jk)*Fila k
+        end
+    end
+    ans = struct("L", L, "U", U)              // Devuelve la estructura (L, U)
+endfunction
+
+
+// *****************************************************************************
+// * EJEMPLO DE EJECUCION
+// *
+// * -->A = [4 5 7; 5 3 6; 0 7 5];
+// * -->m = fact_LU(A);
+// * -->m.L                        // Matriz triangular inferior
+// * ans  =
+// * 
+// *    1.      0.           0.  
+// *    1.25    1.           0.  
+// *    0.    - 2.1538462    1. 
+// *
+// * -->m.U                        // Matriz triangular superior
+// *  ans  =
+// *  
+// *    4.    5.      7.         
+// *    0.  - 3.25  - 2.75       
+// *    0.    0.    - 0.9230769  
+// *
+// * -->m.L*m.U                    // A = L*U
+// *  ans  =
+// *  
+// *    4.    5.    7.  
+// *    5.    3.    6.  
+// *    0.    7.    5.  
+// *****************************************************************************

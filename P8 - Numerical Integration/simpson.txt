@@ -1,0 +1,60 @@
+function integral=simpson(f,a,b)
+  h=(b-a)/2;  
+  p_med= a + h;
+  
+  integral= h * (f(a)+4*f(a+h)+f(b))/3;
+
+  X=a:0.0001:b;
+  Y=f(X);
+  deff("y=interp_cuad(x)","y=f(a) .* (x-b).*(x-p_med) ./ ( (a-b) .* (p_med - b) ) + f(b) .* (x-a) .* (x-p_med) / ((b-a).*(b-p_med)) + f(p_med) .* (x-a) .* (x-b) / ((p_med - a) .* (p_med - b) ) ");
+  S=interp_cuad(X);
+  xgrid(1)
+  xlabel("X"); 
+  ylabel("Y");
+  plot(X,Y,X,S);
+  
+endfunction
+
+function integral=simpson_compuesto_plot (f,a,b,n) // n par!
+  x=linspace(a,b,n+1);
+  integral=0;
+  for i=0:(n-2)/2
+    integral = integral + simpson2(f,x(2*i+1),(x(2*i+3)));
+end
+endfunction
+
+
+function integral=simpson_compuesto (f,a,b,n) //n par!
+
+  x=linspace(a,b,n+1);
+  integral=f(a)+f(b);
+  for i=2:2:n
+    integral = integral + 4*f(x(i));
+  end
+  for i=3:2:n-1
+    integral = integral + 2*f(x(i));
+  end
+  integral=integral*((b-a)/(n*3));
+endfunction
+
+
+
+
+// RESUMEN
+// Trapecio:   a
+	      / f(x) dx =   h * (fb - fa)/2  - h**3 f''(c)/12 donde h=b-a
+	      b
+// Trapecio compuesto con n subintervalos:
+
+	 = h (1/2 fx1 + fx2 + ... + fxn + 1/2 f(xn+1) ) -h**2 (b-a)/12  * f''(c)   donde h=b-a/n
+	error aprox :  -h**2 / 12 * (f'(b)-f'(a))
+
+// Simpson
+	a
+	/  f(x) dx = h/3 * ( fx0 + 4fx1 + 2fx2 + 4fx3 + 2fx4 ... + f4xn-1 + fxn )
+	b 
+
+con un error de 
+
+-h**4 / 180 (b-a) f''''(cn)  ===== aprox ==== -h**4/180 (f'''(b)-f'''(a))
+
